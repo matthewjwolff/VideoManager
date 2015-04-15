@@ -11,10 +11,6 @@ import java.util.ArrayList;
  *
  * @author Matthew Wolff
  */
-public class Video {
-    public String access;
-    public Time length;
-    public ArrayList<Tag> tags;
-    public int hash;
+public class Library extends ArrayList<Video> {
     
 }

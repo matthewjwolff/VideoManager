@@ -5,14 +5,18 @@
  */
 package videomanager;
 
-import java.util.ArrayList;
-
 /**
  *
  * @author Matthew Wolff
  */
-public class Tag extends ArrayList<Video>{
+public class Tag {
+    /**
+     * Type of tag (like "character", "venue", "tournament", etc.)
+     */
     public String type;
+    /**
+     * The actual tag (like "fox", "Armada", etc.)
+     */
     public String value;
     
     public Tag(String type, String value)
