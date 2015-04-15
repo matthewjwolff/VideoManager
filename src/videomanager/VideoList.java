@@ -18,6 +18,7 @@ public class VideoList {
     void getVideosFromTags()
     {
         //go through each tag, get all videos, check for duplicates.
+        System.out.println("test");
     }
     
     boolean equals(VideoList other)
