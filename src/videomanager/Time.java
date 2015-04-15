@@ -9,7 +9,13 @@ package videomanager;
  *
  * @author Matthew Wolff
  */
-class Time {
+public class Time {
     public int seconds;
     public int minutes;
+    
+    public Time(int minutes, int seconds)
+    {
+        this.seconds = seconds;
+        this.minutes = minutes;
+    }
 }
