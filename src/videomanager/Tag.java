@@ -24,4 +24,9 @@ public class Tag {
         this.type = type;
         this.value = value;
     }
+    
+    public boolean equals(Tag other)
+    {
+        return (type.equals(other.type))&&(value.equals(other.value));
+    }
 }
