@@ -6,10 +6,17 @@
 package videomanager;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 
 /**
  *
@@ -25,11 +32,27 @@ public class Library extends ArrayList<Video> {
     }
     
     //load from xml
-    public Library(File location)
+    public Library(File file) throws SAXException, ParserConfigurationException
     {
         super();
-        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-        //DocumentBuilder builder = factory.newDocumentBuilder();
-        //Document doc = builder.parse(location);
+        try {
+            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder builder = factory.newDocumentBuilder();
+            Document doc = builder.parse(file);
+            NodeList videos = doc.getElementsByTagName("video");
+            for(int i=0; i<videos.getLength(); i++)
+            {
+                NodeList XMLTags = videos.item(i).getChildNodes();
+                String location = XMLTags.item(0).getTextContent();
+                String title = XMLTags.item(1).getTextContent();
+                ArrayList<Tag> tags = new ArrayList<>();
+                for(int j=2; j<XMLTags.getLength(); j++)
+                    tags.add(new Tag(XMLTags.item(j).getNodeName(),XMLTags.item(j).getNodeValue()));
+                this.add(new Video(location,title,tags));
+            }
+        } catch (IOException ex) {
+            //Do something when file is not found
+            Logger.getLogger(Library.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }
