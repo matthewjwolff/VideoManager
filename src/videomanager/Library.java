@@ -9,7 +9,11 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.HashSet;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -28,7 +32,7 @@ import org.xml.sax.SAXException;
  *
  * @author Matthew Wolff
  */
-public class Library extends ArrayList<Video> {
+public class Library extends HashSet<Video> {
     
     //Make an XML and save the library
     /**
@@ -57,7 +61,7 @@ public class Library extends ArrayList<Video> {
         for(Video v : this)
         {
             currentNode = currentNode.appendChild(doc.createElement("video"));
-            currentNode.appendChild(doc.createElement("location").appendChild(doc.createTextNode(v.location)));
+            currentNode.appendChild(doc.createElement("location").appendChild(doc.createTextNode(v.location.getPath())));
             currentNode.appendChild(doc.createElement("title").appendChild(doc.createTextNode(v.title)));
             for(Tag t : v.tags)
                 currentNode.appendChild(doc.createElement(t.type).appendChild(doc.createTextNode(t.value)));
@@ -74,27 +78,28 @@ public class Library extends ArrayList<Video> {
     //load from xml
     /**
      * Loads the previous run's library
-     * @param file file to load from
-     * @throws SAXException
-     * @throws ParserConfigurationException
-     * @throws IOException 
+     * @param file file to load from 
      */
-    public Library(File file) throws SAXException, ParserConfigurationException, IOException
+    public Library(File file)
     {
         super();
-        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder builder = factory.newDocumentBuilder();
-        Document doc = builder.parse(file);
-        NodeList videos = doc.getElementsByTagName("video");
-        for(int i=0; i<videos.getLength(); i++)
-        {
-            NodeList XMLTags = videos.item(i).getChildNodes();
-            String location = XMLTags.item(0).getTextContent();
-            String title = XMLTags.item(1).getTextContent();
-            ArrayList<Tag> tags = new ArrayList<>();
-            for(int j=2; j<XMLTags.getLength(); j++)
-                tags.add(new Tag(XMLTags.item(j).getNodeName(),XMLTags.item(j).getNodeValue()));
-            this.add(new Video(location,title,tags));
+        try {
+            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder builder = factory.newDocumentBuilder();
+            Document doc = builder.parse(file);
+            NodeList videos = doc.getElementsByTagName("video");
+            for(int i=0; i<videos.getLength(); i++)
+            {
+                NodeList XMLTags = videos.item(i).getChildNodes();
+                URI location = new URI(XMLTags.item(0).getTextContent());
+                String title = XMLTags.item(1).getTextContent();
+                HashSet<Tag> tags = new HashSet<>();
+                for(int j=2; j<XMLTags.getLength(); j++)
+                    tags.add(new Tag(XMLTags.item(j).getNodeName(),XMLTags.item(j).getNodeValue()));
+                this.add(new Video(location,title,tags));
+            }
+        } catch (IOException | ParserConfigurationException | SAXException | URISyntaxException ex) {
+            Logger.getLogger(Library.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 }

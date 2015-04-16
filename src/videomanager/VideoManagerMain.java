@@ -5,6 +5,7 @@
  */
 package videomanager;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -31,7 +32,8 @@ public class VideoManagerMain {
         //For Quin: to launch gui, uncomment following line.
         //videomanager.gui.VideoManagerClient.main(args);
         
-        Library videoLib = new Library(fileLoc)
+        File fileLoc = null;
+        Library videoLib = new Library(fileLoc);
         
         ArrayList<Tag> testTags = new ArrayList<>();
         Random r = new Random();
