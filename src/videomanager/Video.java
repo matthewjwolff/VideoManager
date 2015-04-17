@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package videomanager;
 
 import java.awt.Desktop;
@@ -14,7 +9,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- *
+ * Models a remotely-hosted video tagged with content-related tags.
  * @author Matthew Wolff
  */
 public class Video {
@@ -35,6 +30,34 @@ public class Video {
         this.location = location;
         this.tags = tags;
         this.title = title;
+    }
+    
+    /**
+     * Combines the tags of two identical videos, implemented statically.
+     * I have no idea why anyone would want this, but it was easy, so why not.
+     * Refer to documentation for other combineTags method for serious javadoc.
+     * @param first the first video
+     * @param second the second video
+     * @return the first video with second video's tags added to it.
+     */
+    public static Video combineTags(Video first, Video second)
+    {
+        first.combineTags(second);
+        return first;
+    }
+    
+    /**
+     * Combines the tags of two identical videos. Does not create duplicates.
+     * Note: this method does nothing if the videos are not identical.
+     * @param other The video whose tags are to be added to this video.
+     */
+    public void combineTags(Video other)
+    {
+        if(other.equals(this))
+        {
+            for(Tag otherTag : other.tags)
+                tags.add(otherTag);
+        }
     }
     
     /**
@@ -63,6 +86,9 @@ public class Video {
         return hash;
     }
     
+    /**
+     * Launches the user's default browser to open the remotely-hosted video.
+     */
     public void watch()
     {
         try {

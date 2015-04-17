@@ -6,7 +6,6 @@
 package videomanager;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URI;
@@ -46,32 +45,33 @@ public class Library extends HashSet<Video> {
      *      /video
      * /xml
      * @param file to save to
-     * @throws ParserConfigurationException
-     * @throws TransformerConfigurationException
-     * @throws TransformerException
-     * @throws FileNotFoundException
-     * @throws IOException 
      */
-    public void saveTo(File file) throws ParserConfigurationException, TransformerConfigurationException, TransformerException, FileNotFoundException, IOException
+    public void saveTo(File file)
     {
-        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder builder = factory.newDocumentBuilder();
-        Document doc = builder.newDocument();
-        Node currentNode = doc.appendChild(doc.createElement("xml"));
-        for(Video v : this)
-        {
-            currentNode = currentNode.appendChild(doc.createElement("video"));
-            currentNode.appendChild(doc.createElement("location").appendChild(doc.createTextNode(v.location.getPath())));
-            currentNode.appendChild(doc.createElement("title").appendChild(doc.createTextNode(v.title)));
-            for(Tag t : v.tags)
-                currentNode.appendChild(doc.createElement(t.type).appendChild(doc.createTextNode(t.value)));
-        }
-        TransformerFactory tFactory = TransformerFactory.newInstance();
-        Transformer transformer = tFactory.newTransformer();
-        DOMSource source = new DOMSource(doc);
-        try (FileOutputStream output = new FileOutputStream(file)) {
-            StreamResult result = new StreamResult(output);
-            transformer.transform(source, result);
+        try {
+            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder builder = factory.newDocumentBuilder();
+            Document doc = builder.newDocument();
+            Node currentNode = doc.appendChild(doc.createElement("xml"));
+            for(Video v : this)
+            {
+                currentNode = currentNode.appendChild(doc.createElement("video"));
+                currentNode.appendChild(doc.createElement("location").appendChild(doc.createTextNode(v.location.getPath())));
+                currentNode.appendChild(doc.createElement("title").appendChild(doc.createTextNode(v.title)));
+                for(Tag t : v.tags)
+                    currentNode.appendChild(doc.createElement(t.type).appendChild(doc.createTextNode(t.value)));
+            }
+            TransformerFactory tFactory = TransformerFactory.newInstance();
+            Transformer transformer = tFactory.newTransformer();
+            DOMSource source = new DOMSource(doc);
+            try (FileOutputStream output = new FileOutputStream(file)) {
+                StreamResult result = new StreamResult(output);
+                transformer.transform(source, result);
+            } catch (IOException | TransformerException ex) {
+                Logger.getLogger(Library.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }   catch (ParserConfigurationException | TransformerConfigurationException ex) {
+            Logger.getLogger(Library.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
@@ -101,5 +101,47 @@ public class Library extends HashSet<Video> {
         } catch (IOException | ParserConfigurationException | SAXException | URISyntaxException ex) {
             Logger.getLogger(Library.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+    
+    /**
+     * Note about the following method:
+     * 
+     * I overrode add() to code for the possibility of adding a Video object that points to
+     * the same video URL but has different tags. The tags would need to be combined.
+     * This gets complicated because of how a HashSet works.
+     * 
+     * An alternative would be to not override the method and just leave it up to
+     * someone coding a client to handle adding a video that has already been entered.
+     * I'm leaning toward that option.
+     */
+    
+    /**
+     * Adds the video to the Library.
+     * If the video is not in the library already, it is added as usual.
+     * If it is in the library, the copy in the library is extracted. The copy's
+     * tags are combined with v's tags and then v is inserted into the Library.
+     * @param v the video to add.
+     * @return true if the video was a valid addition (was not present already).
+     */
+    @Override
+    public boolean add(Video v)
+    {
+        if(contains(v))
+        {
+            Video present = null;
+            for(Video i : this)
+            {
+                if(i.equals(v))
+                {
+                    present = i;
+                    break;
+                }
+            }
+            if(present.tags.equals(v)) return false;
+            this.remove(present);
+            v.combineTags(present);
+            this.add(v);
+            return false;
+        } else return super.add(v);
     }
 }
