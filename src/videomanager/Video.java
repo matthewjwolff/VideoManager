@@ -64,6 +64,7 @@ public class Video {
      * Returns true if this video points to the same location as another.
      * Possibly check for URI's .equals()
      * This method only takes the location (a URI) into account.
+     * Hey maybe make some other equals to see if tags are equal?
      * @param o the object to compare
      * @return true (possibly) if both locations are the same, false if they are different or o is not a Video.
      */

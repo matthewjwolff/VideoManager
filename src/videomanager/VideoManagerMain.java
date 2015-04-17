@@ -32,8 +32,9 @@ public class VideoManagerMain {
         //For Quin: to launch gui, uncomment following line.
         //videomanager.gui.VideoManagerClient.main(args);
         
-        File fileLoc = null;
-        Library videoLib = new Library(fileLoc);
+        final File libraryFile = new File("library.xml");
+        
+        Library videoLib = new Library(libraryFile);
         
         ArrayList<Tag> testTags = new ArrayList<>();
         Random r = new Random();
@@ -47,6 +48,8 @@ public class VideoManagerMain {
         testTags.add(new Tag("stage",charArray[stageIdx]));
         
         ArrayList<Video> resultVideos = new QueryResult(videoLib, testTags).getResult();
+        
+        videoLib.saveTo(libraryFile);
         
     }
     

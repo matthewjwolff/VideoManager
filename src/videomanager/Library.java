@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package videomanager;
 
 import java.io.File;
@@ -28,12 +23,16 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 /**
- *
+ * Models a set of videos marked with content-specific tags.
+ * Extends the Java HashSet definition, restricted to the Video class.
+ * NOTE: always check if the video is contained in the HashSet before adding:
+ * A video is considered equal to another only if they point to the same file.
+ * Tags are not taken into account when considering equality; therefore, adding
+ * an identical video will not add its tags to the video already in the set.
  * @author Matthew Wolff
  */
 public class Library extends HashSet<Video> {
     
-    //Make an XML and save the library
     /**
      * Saves the current Library as an XML File formatted thusly:
      * xml
@@ -44,6 +43,7 @@ public class Library extends HashSet<Video> {
      *          ...
      *      /video
      * /xml
+     * Possibly consider calling a video's toXML method to clean code?
      * @param file to save to
      */
     public void saveTo(File file)
@@ -75,9 +75,25 @@ public class Library extends HashSet<Video> {
         }
     }
     
-    //load from xml
     /**
-     * Loads the previous run's library
+     * Searches through this HashSet for a video identical to the parameter.
+     * Their tags are not guaranteed to be identical; rather, this method should
+     * be used to get a video with different tags.
+     * @param v the video to find
+     * @return the video in this HashSet identical to the parameter
+     */
+    public Video getIdentical(Video v)
+    {
+        for(Video i : this)
+        {
+            if(i.equals(v)) return i;
+        }
+        return null;
+    }
+
+    /**
+     * Loads the previous run's library.
+     * Possibly consider calling a video's toXML method to clean code?
      * @param file file to load from 
      */
     public Library(File file)
@@ -98,50 +114,10 @@ public class Library extends HashSet<Video> {
                     tags.add(new Tag(XMLTags.item(j).getNodeName(),XMLTags.item(j).getNodeValue()));
                 this.add(new Video(location,title,tags));
             }
-        } catch (IOException | ParserConfigurationException | SAXException | URISyntaxException ex) {
+        } catch (ParserConfigurationException | SAXException | URISyntaxException ex) {
             Logger.getLogger(Library.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            System.out.println("Could not find library file. Assuming this is first run and initializing with empty library.");
         }
-    }
-    
-    /**
-     * Note about the following method:
-     * 
-     * I overrode add() to code for the possibility of adding a Video object that points to
-     * the same video URL but has different tags. The tags would need to be combined.
-     * This gets complicated because of how a HashSet works.
-     * 
-     * An alternative would be to not override the method and just leave it up to
-     * someone coding a client to handle adding a video that has already been entered.
-     * I'm leaning toward that option.
-     */
-    
-    /**
-     * Adds the video to the Library.
-     * If the video is not in the library already, it is added as usual.
-     * If it is in the library, the copy in the library is extracted. The copy's
-     * tags are combined with v's tags and then v is inserted into the Library.
-     * @param v the video to add.
-     * @return true if the video was a valid addition (was not present already).
-     */
-    @Override
-    public boolean add(Video v)
-    {
-        if(contains(v))
-        {
-            Video present = null;
-            for(Video i : this)
-            {
-                if(i.equals(v))
-                {
-                    present = i;
-                    break;
-                }
-            }
-            if(present.tags.equals(v)) return false;
-            this.remove(present);
-            v.combineTags(present);
-            this.add(v);
-            return false;
-        } else return super.add(v);
     }
 }
