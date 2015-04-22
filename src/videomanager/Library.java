@@ -18,6 +18,7 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
@@ -56,13 +57,22 @@ public class Library extends HashSet<Video> {
             for(Video v : this)
             {
                 currentNode = currentNode.appendChild(doc.createElement("video"));
-                currentNode.appendChild(doc.createElement("location").appendChild(doc.createTextNode(v.location.getPath())));
-                currentNode.appendChild(doc.createElement("title").appendChild(doc.createTextNode(v.title)));
+                Element locationNode = doc.createElement("location");
+                locationNode.setTextContent(v.location);
+                currentNode.appendChild(locationNode);
+                Element titleNode = doc.createElement("title");
+                titleNode.setTextContent(v.title);
+                currentNode.appendChild(titleNode);
                 for(Tag t : v.tags)
-                    currentNode.appendChild(doc.createElement(t.type).appendChild(doc.createTextNode(t.value)));
+                {
+                    Element tagNode = doc.createElement(t.type);
+                    tagNode.setTextContent(t.value);
+                    currentNode.appendChild(tagNode);
+                }
             }
             TransformerFactory tFactory = TransformerFactory.newInstance();
             Transformer transformer = tFactory.newTransformer();
+            //transformer.setOutputProperty("method", "xml");
             DOMSource source = new DOMSource(doc);
             try (FileOutputStream output = new FileOutputStream(file)) {
                 StreamResult result = new StreamResult(output);
@@ -107,14 +117,15 @@ public class Library extends HashSet<Video> {
             for(int i=0; i<videos.getLength(); i++)
             {
                 NodeList XMLTags = videos.item(i).getChildNodes();
-                URI location = new URI(XMLTags.item(0).getTextContent());
+                //URI location = new URI(XMLTags.item(0).getTextContent());
+                String location = XMLTags.item(0).getTextContent();
                 String title = XMLTags.item(1).getTextContent();
                 HashSet<Tag> tags = new HashSet<>();
                 for(int j=2; j<XMLTags.getLength(); j++)
                     tags.add(new Tag(XMLTags.item(j).getNodeName(),XMLTags.item(j).getNodeValue()));
                 this.add(new Video(location,title,tags));
             }
-        } catch (ParserConfigurationException | SAXException | URISyntaxException ex) {
+        } catch (ParserConfigurationException | SAXException ex) {
             Logger.getLogger(Library.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
             System.out.println("Could not find library file. Assuming this is first run and initializing with empty library.");

@@ -6,7 +6,7 @@
 package videomanager;
 
 import java.io.File;
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Random;
 
 /**
@@ -27,7 +27,7 @@ public class VideoManagerMain {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) 
+    public static void main(String[] args)
     {
         //For Quin: to launch gui, uncomment following line.
         //videomanager.gui.VideoManagerClient.main(args);
@@ -36,8 +36,9 @@ public class VideoManagerMain {
         
         Library videoLib = new Library(libraryFile);
         
-        ArrayList<Tag> testTags = new ArrayList<>();
+        HashSet<Tag> testTags = new HashSet<>();
         Random r = new Random();
+        r.setSeed(12);
         
         //Get random character:
         int charIdx = r.nextInt(charArray.length);
@@ -45,11 +46,16 @@ public class VideoManagerMain {
         
         //Get random stage:
         int stageIdx = r.nextInt(stageArray.length);
-        testTags.add(new Tag("stage",charArray[stageIdx]));
+        testTags.add(new Tag("stage",stageArray[stageIdx]));
         
-        ArrayList<Video> resultVideos = new QueryResult(videoLib, testTags).getResult();
+        Video test = new Video("https://youtu.be/7hbpsmTd4PY?t=7m48s","testVideo",testTags);
+        videoLib.add(test);
         
+        //ArrayList<Video> resultVideos = new QueryResult(videoLib, testTags).getResult();
+        Video identical = videoLib.getIdentical(test);
         videoLib.saveTo(libraryFile);
+        
+        identical.watch();
         
     }
     

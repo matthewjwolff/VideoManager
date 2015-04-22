@@ -3,6 +3,7 @@ package videomanager;
 import java.awt.Desktop;
 import java.io.IOException;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.logging.Level;
@@ -13,7 +14,7 @@ import java.util.logging.Logger;
  * @author Matthew Wolff
  */
 public class Video {
-    public URI location;
+    public String location;
     public Time length;
     public String title;
     public HashSet<Tag> tags;
@@ -25,7 +26,7 @@ public class Video {
      * @param title Name of video
      * @param tags the tags associated with this video
      */
-    public Video(URI location, String title, HashSet<Tag> tags)
+    public Video(String location, String title, HashSet<Tag> tags)
     {
         this.location = location;
         this.tags = tags;
@@ -92,9 +93,10 @@ public class Video {
      */
     public void watch()
     {
-        try {
-            Desktop.getDesktop().browse(location);
-        } catch (IOException ex) {
+        try{
+            URI link = new URI(location);
+            Desktop.getDesktop().browse(link);
+        } catch (IOException | URISyntaxException ex) {
             Logger.getLogger(Video.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
