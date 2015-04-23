@@ -117,7 +117,6 @@ public class Library extends HashSet<Video> {
             for(int i=0; i<videos.getLength(); i++)
             {
                 NodeList XMLTags = videos.item(i).getChildNodes();
-                //URI location = new URI(XMLTags.item(0).getTextContent());
                 String location = XMLTags.item(0).getTextContent();
                 String title = XMLTags.item(1).getTextContent();
                 HashSet<Tag> tags = new HashSet<>();

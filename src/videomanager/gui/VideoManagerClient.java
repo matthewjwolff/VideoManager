@@ -51,8 +51,10 @@ public class VideoManagerClient extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
-        jMenu1 = new javax.swing.JMenu();
-        jMenu2 = new javax.swing.JMenu();
+        fileMenu = new javax.swing.JMenu();
+        saveMenuItem = new javax.swing.JMenuItem();
+        helpMenu = new javax.swing.JMenu();
+        helpMenuItem = new javax.swing.JMenuItem();
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -147,11 +149,24 @@ public class VideoManagerClient extends javax.swing.JFrame {
 
         VideoUrlLabel.setText("Video URL");
 
-        jMenu1.setText("File");
-        jMenuBar1.add(jMenu1);
+        fileMenu.setText("File");
 
-        jMenu2.setText("Help");
-        jMenuBar1.add(jMenu2);
+        saveMenuItem.setText("Save...");
+        fileMenu.add(saveMenuItem);
+
+        jMenuBar1.add(fileMenu);
+
+        helpMenu.setText("Help");
+
+        helpMenuItem.setText("Help...");
+        helpMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                helpMenuItemActionPerformed(evt);
+            }
+        });
+        helpMenu.add(helpMenuItem);
+
+        jMenuBar1.add(helpMenu);
 
         setJMenuBar(jMenuBar1);
 
@@ -280,6 +295,10 @@ public class VideoManagerClient extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_CharacterAddActionPerformed
 
+    private void helpMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_helpMenuItemActionPerformed
+        new VMHelper().setVisible(true);
+    }//GEN-LAST:event_helpMenuItemActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -328,6 +347,9 @@ public class VideoManagerClient extends javax.swing.JFrame {
     private javax.swing.JLabel StageLabel;
     private javax.swing.JTextField VideoUrl;
     private javax.swing.JLabel VideoUrlLabel;
+    private javax.swing.JMenu fileMenu;
+    private javax.swing.JMenu helpMenu;
+    private javax.swing.JMenuItem helpMenuItem;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JLabel jLabel1;
@@ -336,11 +358,10 @@ public class VideoManagerClient extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JMenu jMenu1;
-    private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private java.awt.Panel panel1;
+    private javax.swing.JMenuItem saveMenuItem;
     // End of variables declaration//GEN-END:variables
 }
