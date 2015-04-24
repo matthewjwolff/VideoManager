@@ -5,6 +5,10 @@
  */
 package videomanager.gui;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.JComponent;
+
 /**
  *
  * @author Matthew Wolff
@@ -17,7 +21,7 @@ public class VideoManagerClient extends javax.swing.JFrame {
     public VideoManagerClient() {
         initComponents();
     }
-
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -90,6 +94,7 @@ public class VideoManagerClient extends javax.swing.JFrame {
         );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Video Manager");
 
         CharacterAdd.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Bowser", "Captain Falcon", "Donkey Kong", "Dr. Mario", "Falco", "Fox", "Gannondorf", "Ice Climbers", "Jigglypuff", "Kirby", "Luigi", "Link", "Mario", "Marth", "Mewtwo", "Mr.Game&Watch", "Ness", "Peach", "Pichu", "Pikachu", "Roy", "Samus", "Sheik", "Yoshi", "Young Link", "Zelda" }));
         CharacterAdd.addActionListener(new java.awt.event.ActionListener() {
@@ -296,9 +301,25 @@ public class VideoManagerClient extends javax.swing.JFrame {
     }//GEN-LAST:event_CharacterAddActionPerformed
 
     private void helpMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_helpMenuItemActionPerformed
-        new VMHelper().setVisible(true);
+        new VMHelper(this).setVisible(true);
     }//GEN-LAST:event_helpMenuItemActionPerformed
 
+    public ActionListener helper = new ActionListener() {
+            boolean up = false;
+            final int STEPS = 4;
+            int step = 0;
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JComponent flasher = CharacterAddButton;
+                if(up)
+                    flasher.setBackground(flasher.getBackground().brighter());
+                else 
+                    flasher.setBackground(flasher.getBackground().darker());
+                System.out.println("tick "+up);
+                if(++step%STEPS==0)
+                    up = !up;
+            }
+    };
     /**
      * @param args the command line arguments
      */
