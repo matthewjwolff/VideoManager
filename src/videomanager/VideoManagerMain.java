@@ -6,6 +6,8 @@
 package videomanager;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Random;
 
@@ -30,7 +32,7 @@ public class VideoManagerMain {
     public static void main(String[] args)
     {
         //For Quin: to launch gui, uncomment following line.
-        videomanager.gui.VideoManagerClient.main(args);
+        //videomanager.gui.VideoManagerClient.main(args);
         
         final File libraryFile = new File("library.xml");
         
@@ -38,22 +40,33 @@ public class VideoManagerMain {
         
         HashSet<Tag> testTags = new HashSet<>();
         Random r = new Random();
-        r.setSeed(12);
+        //r.setSeed(12);
         
         //Get random character:
         int charIdx = r.nextInt(charArray.length);
-        testTags.add(new Tag("character",charArray[charIdx]));
+        String testChar = charArray[charIdx];
+        testTags.add(new Tag("character",testChar));
         
         //Get random stage:
         int stageIdx = r.nextInt(stageArray.length);
-        testTags.add(new Tag("stage",stageArray[stageIdx]));
+        String testStage = stageArray[stageIdx];
+        testTags.add(new Tag("stage",testStage));
         
-        Video test = new Video("https://youtu.be/7hbpsmTd4PY?t=7m48s","testVideo",testTags);
+        String testURL = "https://youtu.be/7hbpsmTd4PY?t=7m48s";
+        Video test = new Video(testURL,"testVideo",testTags);
+        System.out.println(((Tag)testTags.toArray()[0]).type);
         videoLib.add(test);
         
-        //ArrayList<Video> resultVideos = new QueryResult(videoLib, testTags).getResult();
-        Video identical = videoLib.getIdentical(test);
-        videoLib.saveTo(libraryFile);
+        System.out.println("A video has successfully been saved with the following tags: ");
+        System.out.println(((Video)videoLib.toArray()[0]).tags);
+        
+        System.out.println(Arrays.toString(((Video)videoLib.toArray()[0]).tags.toArray()));
+        
+        ArrayList<Video> resultVideos = new QueryResult(videoLib, testTags).getResult();
+        //Video identical = videoLib.getIdentical(test);
+        //videoLib.saveTo(libraryFile);
+        
+        System.out.println(resultVideos);
         
         //identical.watch();
         

@@ -28,6 +28,12 @@ public class Tag {
     }
     
     @Override
+    public String toString()
+    {
+        return this.value;
+    }
+    
+    @Override
     public boolean equals(Object o)
     {
         if(o instanceof Tag)
