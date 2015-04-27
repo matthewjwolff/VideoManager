@@ -1,14 +1,9 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package videomanager;
 
 import java.util.ArrayList;
 
 /**
- *
+ * Stores the results of a query to the Video Library
  * @author Matthew Wolff
  */
 public class QueryResult 
@@ -29,6 +24,10 @@ public class QueryResult
                 result.add(i);
         }
     }
+    /**
+     * Returns the result of the query as an ArrayList of Videos
+     * @return the result of the query
+     */
     public ArrayList<Video> getResult()
     {
         return result;

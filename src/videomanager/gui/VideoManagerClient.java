@@ -5,10 +5,6 @@
  */
 package videomanager.gui;
 
-import java.awt.Color;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.Objects;
 import javax.swing.JComponent;
 
 /**
@@ -22,21 +18,21 @@ public class VideoManagerClient extends javax.swing.JFrame {
      */
     public VideoManagerClient() {
         initComponents();
-        helpers = new JComponent[8];
-        helpers[0] = VideoUrl;
-        helpers[1] = CharacterAdd;
-        helpers[2] = CharacterAddButton;
-        helpers[3] = StageAdd;
-        helpers[4] = StageAddButton;
-        helpers[5] = PlayerTag;
-        helpers[6] = PlayerAddButton;
-        helpers[7] = jButton5;
-        restore = helpers[0].getBackground();
+        //The following code is needed for proper instantiation of Helper class. Do not modify.
+        JComponent[] temp = {
+            VideoUrl,
+            CharacterAdd,
+            CharacterAddButton,
+            StageAdd,
+            StageAddButton,
+            PlayerTag,
+            PlayerAddButton,
+            jButton5,
+        };
+        helpers = temp;
     }
     
     JComponent[] helpers;
-    int progress = 0;
-    Color restore;
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -318,30 +314,7 @@ public class VideoManagerClient extends javax.swing.JFrame {
     private void helpMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_helpMenuItemActionPerformed
         new VMHelper(this).setVisible(true);
     }//GEN-LAST:event_helpMenuItemActionPerformed
-
-    public void nextHelp()
-    {
-        helpers[progress].setBackground(restore);
-        if(progress<helpers.length)
-            restore = helpers[progress].getBackground();
-    }
-    
-    public ActionListener helper = new ActionListener() {
-            boolean up = false;
-            final int STEPS = 4;
-            int step = 0;
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                JComponent flasher = helpers[progress];
-                if(up)
-                    flasher.setBackground(flasher.getBackground().brighter());
-                else 
-                    flasher.setBackground(flasher.getBackground().darker());
-                System.out.println("tick "+up);
-                if(++step%STEPS==0)
-                    up = !up;
-            }
-    };
+   
     /**
      * @param args the command line arguments
      */

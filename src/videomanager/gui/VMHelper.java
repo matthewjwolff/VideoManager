@@ -1,14 +1,13 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package videomanager.gui;
 
+import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JComponent;
 import javax.swing.Timer;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Element;
@@ -17,7 +16,7 @@ import javax.swing.text.html.HTMLEditorKit;
 import javax.swing.text.html.StyleSheet;
 
 /**
- *
+ * Interactive help window to show the operation of this application
  * @author Matthew Wolff
  */
 public class VMHelper extends javax.swing.JFrame {
@@ -28,11 +27,16 @@ public class VMHelper extends javax.swing.JFrame {
      */
     public VMHelper(VideoManagerClient base) {
         initComponents();
-        timer = new Timer(500, base.helper);
-        this.base = base;
+        timer = new Timer(500, animator);
+        this.helpers = base.helpers;
+        restore = helpers[0].getBackground();
+        timer.start();
+        progressBar.setMaximum(helpers.length-1);
     }
     
-    private final VideoManagerClient base;
+    private Color restore;
+    
+    private final JComponent[] helpers;
     
     private final Timer timer;
 
@@ -46,7 +50,9 @@ public class VMHelper extends javax.swing.JFrame {
         "Submit them to the system. Again, you can have more than two",
         "When you're all done, enter the video into the system"
     };
+    
     private int index = 0;
+    
     private final String[] tasks = {
         "Enter video URL...",
         "Select Characters",
@@ -58,31 +64,54 @@ public class VMHelper extends javax.swing.JFrame {
         "Finish"
     };
     
+    /**
+     * Advance the help dialog to the next step.
+     */
     public void nextTask()
     {
-        //Probably merge the two indices
-        //No need to check if there will be an out of bounds, you'll never request the next element when you're done.
         if(index==7) 
         {
             this.dispatchEvent(new WindowEvent(this,WindowEvent.WINDOW_CLOSING));
-            base.nextHelp();
             timer.stop();
+            helpers[index].setBackground(restore);
         }
         else
         {
             try {
+                timer.stop();
+                helpers[index].setBackground(restore);
                 Element e = stepsDoc.getElement("last");
                 stepsDoc.setOuterHTML(e,"<li id='complete'>"+tasks[index]+"</li>");
                 stepsDoc.insertAfterEnd(e, "<li id='last'>"+tasks[++index]+"</li>");
                 messageLabel.setText(messages[index]);
-                timer.stop();
-                base.nextHelp();
+                step = 0;
+                up = false;
+                restore = helpers[index].getBackground();
                 timer.start();
+                progressBar.setValue(progressBar.getValue()+1);
             } catch (BadLocationException | IOException ex) {
                 Logger.getLogger(VMHelper.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            } 
         }
     }
+    
+    private int step = 0;
+    
+    private boolean up = false;
+    
+    private final ActionListener animator = new ActionListener() {
+            final int STEPS = 4;
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JComponent flasher = helpers[index];
+                if(up)
+                    flasher.setBackground(flasher.getBackground().brighter());
+                else 
+                    flasher.setBackground(flasher.getBackground().darker());
+                if(++step%STEPS==0)
+                    up = !up;
+            }
+    };
     
     private HTMLDocument stepsDoc;
     
@@ -93,7 +122,7 @@ public class VMHelper extends javax.swing.JFrame {
             stepsDoc = (HTMLDocument) stepsTextPane.getDocument();
             stepsDoc.insertAfterStart(stepsDoc.getDefaultRootElement(), "<ul><li id='last'>"+tasks[index]+"</li></ul>");
             StyleSheet style = stepsDoc.getStyleSheet();
-            style.addRule("#last {color: red;} #complete {color: blue;}");
+            style.addRule("#last {color: blue;} #complete {color: #999999;}");
         } catch (BadLocationException | IOException ex) {
             Logger.getLogger(VMHelper.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -114,7 +143,6 @@ public class VMHelper extends javax.swing.JFrame {
         messageLabel = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         stepsTextPane = new javax.swing.JTextPane();
-        flashButton = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -132,13 +160,6 @@ public class VMHelper extends javax.swing.JFrame {
         stepsTextPane.setEditable(false);
         stepsTextPane.setBackground(new java.awt.Color(240, 240, 240));
         jScrollPane1.setViewportView(stepsTextPane);
-
-        flashButton.setText("flash me");
-        flashButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                flashButtonActionPerformed(evt);
-            }
-        });
 
         jButton1.setText("jButton1");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -160,9 +181,7 @@ public class VMHelper extends javax.swing.JFrame {
                     .addComponent(messageLabel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addComponent(goBackButton)
-                        .addGap(18, 18, 18)
-                        .addComponent(flashButton)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGap(106, 106, 106)
                         .addComponent(jButton1)
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
@@ -181,7 +200,6 @@ public class VMHelper extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(goBackButton)
-                    .addComponent(flashButton)
                     .addComponent(jButton1))
                 .addContainerGap())
         );
@@ -189,16 +207,11 @@ public class VMHelper extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void flashButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_flashButtonActionPerformed
-        timer.start();
-    }//GEN-LAST:event_flashButtonActionPerformed
-
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         nextTask();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton flashButton;
     private javax.swing.JButton goBackButton;
     private javax.swing.JButton jButton1;
     private javax.swing.JScrollPane jScrollPane1;
