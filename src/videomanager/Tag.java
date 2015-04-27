@@ -5,6 +5,8 @@
  */
 package videomanager;
 
+import java.util.Objects;
+
 /**
  *
  * @author Matthew Wolff
@@ -25,8 +27,20 @@ public class Tag {
         this.value = value;
     }
     
-    public boolean equals(Tag other)
+    @Override
+    public boolean equals(Object o)
     {
+        if(o instanceof Tag)
+            return false;
+        Tag other = (Tag)o;
         return (type.equals(other.type))&&(value.equals(other.value));
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 97 * hash + Objects.hashCode(this.type);
+        hash = 97 * hash + Objects.hashCode(this.value);
+        return hash;
     }
 }
