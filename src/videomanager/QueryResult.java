@@ -1,6 +1,7 @@
 package videomanager;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 /**
  * Stores the results of a query to the Video Library
@@ -15,7 +16,7 @@ public class QueryResult
      * @param videos the set of all videos
      * @param tags set of tags to search for
      */
-    public QueryResult(Library videos, ArrayList<Tag> tags)
+    public QueryResult(Library videos, HashSet<Tag> tags)
     {
         result = new ArrayList<>();
         for(Video i : videos)
