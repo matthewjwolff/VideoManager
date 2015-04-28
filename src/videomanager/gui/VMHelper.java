@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -16,13 +17,17 @@ import javax.swing.text.html.HTMLEditorKit;
 import javax.swing.text.html.StyleSheet;
 
 /**
- * Interactive help window to show the operation of this application
+ * Interactive help window to show the operation of this application.
+ * This class was developed solely by Matthew Wolff in fulfillment of the Honors Option agreement for this class.
+ * Evaluation of this class is not part of the main project and should have no affect on the project grade for any member of the development team;
+ * evaluation should be used only to determine if Matthew Wolff has fulfilled the terms of the Honors Option agreement.
  * @author Matthew Wolff
  */
 public class VMHelper extends javax.swing.JFrame {
 
     /**
-     * Creates new form VMHelper
+     * Creates new form VMHelper.
+     * Adds a WindowListener to stop the timer and restore the background of the currently animating object.
      * @param base the window to which this helper is bound.
      */
     public VMHelper(VideoManagerClient base) {
@@ -32,6 +37,39 @@ public class VMHelper extends javax.swing.JFrame {
         restore = helpers[0].getBackground();
         timer.start();
         progressBar.setMaximum(helpers.length-1);
+        this.addWindowListener(new WindowListener() {
+
+            @Override
+            public void windowOpened(WindowEvent e) {
+            }
+
+            @Override
+            public void windowClosing(WindowEvent e) {
+                timer.stop();
+                helpers[index].setBackground(restore);
+            }
+
+            @Override
+            public void windowClosed(WindowEvent e) {
+            }
+
+            @Override
+            public void windowIconified(WindowEvent e) {
+            }
+
+            @Override
+            public void windowDeiconified(WindowEvent e) {
+            }
+
+            @Override
+            public void windowActivated(WindowEvent e) {
+            }
+
+            @Override
+            public void windowDeactivated(WindowEvent e) {
+            }
+            
+        });
     }
     
     private Color restore;
@@ -95,6 +133,26 @@ public class VMHelper extends javax.swing.JFrame {
         }
     }
     
+    /**
+     * Restore the help state to the previous entry
+     */
+    public void previousTask()
+    {
+        if(index!=0)
+        {
+            timer.stop();
+            helpers[index].setBackground(restore);
+            //format html document
+            index--;
+            messageLabel.setText(messages[index]);
+            step = 0;
+            up = false;
+            restore = helpers[index].getBackground();
+            timer.start();
+            progressBar.setValue(progressBar.getValue()-1);
+        }
+    }
+    
     private int step = 0;
     
     private boolean up = false;
@@ -152,6 +210,11 @@ public class VMHelper extends javax.swing.JFrame {
         progressLabel.setText("Progress");
 
         goBackButton.setText("Go Back...");
+        goBackButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                goBackButtonActionPerformed(evt);
+            }
+        });
 
         messageLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         messageLabel.setText(messages[index]);
@@ -181,7 +244,7 @@ public class VMHelper extends javax.swing.JFrame {
                     .addComponent(messageLabel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addComponent(goBackButton)
-                        .addGap(106, 106, 106)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButton1)
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
@@ -210,6 +273,10 @@ public class VMHelper extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         nextTask();
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void goBackButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_goBackButtonActionPerformed
+        previousTask();
+    }//GEN-LAST:event_goBackButtonActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton goBackButton;

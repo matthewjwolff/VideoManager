@@ -1,19 +1,17 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package videomanager;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Random;
 
 /**
- *
- * @author Matthew Wolff
+ * This application allows the user to efficiently navigate through videos based on content-specific tags.
+ * The application was developed with the intended use of storing Super Smash Bros. Melee videos, but it is not limited to just those videos.
+ * Code logic was developed by Matthew Wolff.
+ * GUI logic and design was developed by Quin Mese.
+ * Testing was conducted by Xin Shu.
+ * @author Matthew Wolff, Xin Shu, Qin Mese
  */
 public class VideoManagerMain {
     
@@ -40,7 +38,7 @@ public class VideoManagerMain {
         
         HashSet<Tag> testTags = new HashSet<>();
         Random r = new Random();
-        //r.setSeed(12);
+        r.setSeed(12);
         
         //Get random character:
         int charIdx = r.nextInt(charArray.length);
@@ -52,19 +50,22 @@ public class VideoManagerMain {
         String testStage = stageArray[stageIdx];
         testTags.add(new Tag("stage",testStage));
         
+        Tag equalityTest = new Tag("stage","Final Destination");
+        System.out.println("Equal = "+equalityTest.equals(equalityTest));
+        
+        System.out.println("Tags are:");
+        System.out.println(testTags.toString());
+        
         String testURL = "https://youtu.be/7hbpsmTd4PY?t=7m48s";
         Video test = new Video(testURL,"testVideo",testTags);
-        System.out.println(((Tag)testTags.toArray()[0]).type);
-        videoLib.add(test);
+        System.out.println("Video added = "+videoLib.add(test));
         
         System.out.println("A video has successfully been saved with the following tags: ");
         System.out.println(((Video)videoLib.toArray()[0]).tags);
         
-        System.out.println(Arrays.toString(((Video)videoLib.toArray()[0]).tags.toArray()));
-        
         ArrayList<Video> resultVideos = new QueryResult(videoLib, testTags).getResult();
         //Video identical = videoLib.getIdentical(test);
-        //videoLib.saveTo(libraryFile);
+        videoLib.saveTo(libraryFile);
         
         System.out.println(resultVideos);
         

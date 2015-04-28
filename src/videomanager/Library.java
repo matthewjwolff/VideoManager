@@ -42,7 +42,6 @@ public class Library extends HashSet<Video> {
      *          ...
      *      /video
      * /xml
-     * Possibly consider calling a video's toXML method to clean code?
      * @param file to save to
      */
     public void saveTo(File file)
@@ -70,7 +69,6 @@ public class Library extends HashSet<Video> {
             }
             TransformerFactory tFactory = TransformerFactory.newInstance();
             Transformer transformer = tFactory.newTransformer();
-            //transformer.setOutputProperty("method", "xml");
             DOMSource source = new DOMSource(doc);
             try (FileOutputStream output = new FileOutputStream(file)) {
                 StreamResult result = new StreamResult(output);
@@ -100,8 +98,7 @@ public class Library extends HashSet<Video> {
     }
 
     /**
-     * Loads the previous run's library.
-     * Possibly consider calling a video's toXML method to clean code?
+     * Loads the previous run's library. If the file cannot be found, defaults to an empty library and falls back to the superclass's constructor.
      * @param file file to load from 
      */
     public Library(File file)
@@ -119,7 +116,10 @@ public class Library extends HashSet<Video> {
                 String title = XMLTags.item(1).getTextContent();
                 HashSet<Tag> tags = new HashSet<>();
                 for(int j=2; j<XMLTags.getLength(); j++)
-                    tags.add(new Tag(XMLTags.item(j).getNodeName(),XMLTags.item(j).getNodeValue()));
+                {
+                    tags.add(new Tag(XMLTags.item(j).getNodeName(),XMLTags.item(j).getTextContent()));
+                    System.out.println(XMLTags.item(j).getNodeName()+": "+XMLTags.item(j).getTextContent());
+                }
                 this.add(new Video(location,title,tags));
             }
         } catch (ParserConfigurationException | SAXException ex) {

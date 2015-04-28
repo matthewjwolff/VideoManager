@@ -9,7 +9,8 @@ import javax.swing.JComponent;
 
 /**
  *
- * @author Matthew Wolff
+ * A trivial amount of code was added by Matthew Wolff to expose fields necessary for his VMHelper class.
+ * @author Quin Mese
  */
 public class VideoManagerClient extends javax.swing.JFrame {
 

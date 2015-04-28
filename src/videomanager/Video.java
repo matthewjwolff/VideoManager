@@ -14,11 +14,18 @@ import java.util.logging.Logger;
  * @author Matthew Wolff
  */
 public class Video {
+    /**
+     * The location of the video
+     */
     public String location;
-    public Time length;
+    /**
+     * This video's title
+     */
     public String title;
+    /**
+     * The list of tags associated with this video
+     */
     public HashSet<Tag> tags;
-    public int hash;
     
     /**
      * Creates a new Video object representing an entry in the Library
@@ -63,11 +70,8 @@ public class Video {
     
     /**
      * Returns true if this video points to the same location as another.
-     * Possibly check for URI's .equals()
-     * This method only takes the location (a URI) into account.
-     * Hey maybe make some other equals to see if tags are equal?
      * @param o the object to compare
-     * @return true (possibly) if both locations are the same, false if they are different or o is not a Video.
+     * @return true if both locations are the same, false if they are different or o is not a Video.
      */
     @Override
     public boolean equals(Object o)

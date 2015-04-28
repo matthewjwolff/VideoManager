@@ -1,14 +1,10 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package videomanager;
 
 import java.util.Objects;
 
 /**
- *
+ * Represents a two-string Tag of type and value.
+ * Note the attributes, methods, and parameters of this class are case sensitive.
  * @author Matthew Wolff
  */
 public class Tag {
@@ -21,27 +17,47 @@ public class Tag {
      */
     public String value;
     
+    /**
+     * Simple constructor
+     * @param type the type of tag (e.g. "character")
+     * @param value the value of the tag (e.g. "fox")
+     */
     public Tag(String type, String value)
     {
         this.type = type;
         this.value = value;
     }
     
+    /**
+     * Formats this class as a String
+     * @return "type: value"
+     */
     @Override
     public String toString()
     {
-        return this.value;
+        return this.type + ": "+this.value;
     }
     
+    /**
+     * Tests for equality with another Tag object.
+     * @param o the object to which this object will be compared
+     * @return true if the tag and value are equal, false otherwise
+     */
     @Override
     public boolean equals(Object o)
     {
         if(o instanceof Tag)
-            return false;
-        Tag other = (Tag)o;
-        return (type.equals(other.type))&&(value.equals(other.value));
+        {
+            Tag other = (Tag)o;
+            return type.equals(other.type)&&(value.equals(other.value));
+        }
+        return false;
     }
 
+    /**
+     * As per contract, the hashcode must be overrode since equals was overrode.
+     * @return a hash code taking into account only type and value
+     */
     @Override
     public int hashCode() {
         int hash = 3;
