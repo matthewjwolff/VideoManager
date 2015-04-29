@@ -6,6 +6,8 @@
 package videomanager.gui;
 
 import javax.swing.JComponent;
+import java.util.HashSet;
+import videomanager.*;
 
 /**
  *
@@ -28,10 +30,12 @@ public class VideoManagerClient extends javax.swing.JFrame {
             StageAddButton,
             PlayerTag,
             PlayerAddButton,
-            jButton5,
+            AcceptButton,
         };
         helpers = temp;
     }
+    
+    HashSet<Tag> Tags = new HashSet<>();
     
     JComponent[] helpers;
     /**
@@ -59,13 +63,15 @@ public class VideoManagerClient extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         jButton4 = new javax.swing.JButton();
-        jButton5 = new javax.swing.JButton();
+        AcceptButton = new javax.swing.JButton();
         VideoUrlLabel = new javax.swing.JLabel();
         VideoUrl = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
         CharacterTagLabel = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
+        videoTitleLabel = new javax.swing.JLabel();
+        videoTitle = new javax.swing.JTextField();
         jMenuBar1 = new javax.swing.JMenuBar();
         fileMenu = new javax.swing.JMenu();
         saveMenuItem = new javax.swing.JMenuItem();
@@ -162,9 +168,28 @@ public class VideoManagerClient extends javax.swing.JFrame {
             }
         });
 
-        jButton5.setText("Accept");
+        AcceptButton.setText("Accept");
+        AcceptButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                AcceptButtonActionPerformed(evt);
+            }
+        });
 
         VideoUrlLabel.setText("Video URL");
+
+        VideoUrl.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                VideoUrlActionPerformed(evt);
+            }
+        });
+
+        videoTitleLabel.setText("VideoTitle");
+
+        videoTitle.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                videoTitleActionPerformed(evt);
+            }
+        });
 
         fileMenu.setText("File");
 
@@ -229,18 +254,24 @@ public class VideoManagerClient extends javax.swing.JFrame {
                                         .addComponent(jLabel4)
                                         .addGap(68, 68, 68)
                                         .addComponent(jLabel1))
-                                    .addComponent(jButton5)))
-                            .addComponent(CharacterTagLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                    .addComponent(AcceptButton)))
+                            .addComponent(CharacterTagLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(videoTitleLabel)
+                    .addComponent(videoTitle, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(6, 6, 6)
+                .addComponent(videoTitleLabel)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(videoTitle, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(VideoUrlLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(VideoUrl, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(32, 32, 32)
                 .addComponent(CharacterLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -269,10 +300,10 @@ public class VideoManagerClient extends javax.swing.JFrame {
                     .addComponent(PlayerAddButton)
                     .addComponent(jLabel6)
                     .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 20, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton4)
-                    .addComponent(jButton5))
+                    .addComponent(AcceptButton))
                 .addGap(28, 28, 28))
         );
 
@@ -289,22 +320,27 @@ public class VideoManagerClient extends javax.swing.JFrame {
 
     private void PlayerAddButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PlayerAddButtonActionPerformed
         String tag = PlayerTag.getText();
+        Tags.add(new Tag("player",tag));
         jLabel3.setText(jLabel3.getText() + ' ' + tag);
+        PlayerTag.setText("");
         
     }//GEN-LAST:event_PlayerAddButtonActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        // TODO add your handling code here:
+        clearAll();
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void CharacterAddButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CharacterAddButtonActionPerformed
         String tag = CharacterAdd.getSelectedItem().toString();
+        Tags.add(new Tag("character",tag));
         String CharacterTagsText = CharacterTagLabel.getText() + ", " + tag;
         CharacterTagLabel.setText(CharacterTagsText);
+        
     }//GEN-LAST:event_CharacterAddButtonActionPerformed
 
     private void StageAddButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_StageAddButtonActionPerformed
         String tag = StageAdd.getSelectedItem().toString();
+        Tags.add(new Tag("stage",tag));
         jLabel2.setText(jLabel2.getText() + ' ' + tag);
     }//GEN-LAST:event_StageAddButtonActionPerformed
 
@@ -315,7 +351,30 @@ public class VideoManagerClient extends javax.swing.JFrame {
     private void helpMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_helpMenuItemActionPerformed
         new VMHelper(helpers).setVisible(true);
     }//GEN-LAST:event_helpMenuItemActionPerformed
+
+    private void AcceptButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AcceptButtonActionPerformed
+        new Video(VideoUrl.getText(),videoTitle.getText(),Tags);
+    }//GEN-LAST:event_AcceptButtonActionPerformed
+
+    private void VideoUrlActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_VideoUrlActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_VideoUrlActionPerformed
+
+    private void videoTitleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_videoTitleActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_videoTitleActionPerformed
    
+    public void clearAll()
+    {
+        VideoUrl.setText("");
+        videoTitle.setText("");
+        CharacterTagLabel.setText("");
+        jLabel2.setText("");
+        jLabel3.setText("");
+        PlayerTag.setText("");
+        
+    }
+    
     /**
      * @param args the command line arguments
      */
@@ -352,6 +411,7 @@ public class VideoManagerClient extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton AcceptButton;
     private javax.swing.JComboBox CharacterAdd;
     private javax.swing.JButton CharacterAddButton;
     private javax.swing.JLabel CharacterLabel;
@@ -368,7 +428,6 @@ public class VideoManagerClient extends javax.swing.JFrame {
     private javax.swing.JMenu helpMenu;
     private javax.swing.JMenuItem helpMenuItem;
     private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -380,5 +439,7 @@ public class VideoManagerClient extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private java.awt.Panel panel1;
     private javax.swing.JMenuItem saveMenuItem;
+    private javax.swing.JTextField videoTitle;
+    private javax.swing.JLabel videoTitleLabel;
     // End of variables declaration//GEN-END:variables
 }
