@@ -354,6 +354,7 @@ public class VideoManagerClient extends javax.swing.JFrame {
 
     private void AcceptButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AcceptButtonActionPerformed
         new Video(VideoUrl.getText(),videoTitle.getText(),Tags);
+        clearAll();
     }//GEN-LAST:event_AcceptButtonActionPerformed
 
     private void VideoUrlActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_VideoUrlActionPerformed
