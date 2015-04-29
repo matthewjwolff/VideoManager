@@ -30,7 +30,7 @@ public class VideoManagerMain {
     public static void main(String[] args)
     {
         //For Quin: to launch gui, uncomment following line.
-        //videomanager.gui.VideoManagerClient.main(args);
+        videomanager.gui.VideoManagerClient.main(args);
         
         final File libraryFile = new File("library.xml");
         

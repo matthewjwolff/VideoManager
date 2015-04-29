@@ -313,7 +313,7 @@ public class VideoManagerClient extends javax.swing.JFrame {
     }//GEN-LAST:event_CharacterAddActionPerformed
 
     private void helpMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_helpMenuItemActionPerformed
-        new VMHelper(this).setVisible(true);
+        new VMHelper(helpers).setVisible(true);
     }//GEN-LAST:event_helpMenuItemActionPerformed
    
     /**
