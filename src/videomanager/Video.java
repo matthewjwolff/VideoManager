@@ -36,7 +36,7 @@ public class Video {
     public Video(String location, String title, HashSet<Tag> tags)
     {
         this.location = location;
-        this.tags = tags;
+        this.tags = (HashSet<Tag>)tags.clone();
         this.title = title;
     }
     
