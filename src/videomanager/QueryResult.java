@@ -23,7 +23,6 @@ public class QueryResult
         int index = 0;
         for(Video i : videos)
         {
-            System.out.println("qr: "+i.tags);
             if(i.tags.containsAll(tags))
                 result.add(index++,i);
         }
