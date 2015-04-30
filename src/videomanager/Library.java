@@ -66,6 +66,7 @@ public class Library extends HashSet<Video> {
                     tagNode.setTextContent(t.value);
                     currentNode.appendChild(tagNode);
                 }
+                currentNode = currentNode.getParentNode();
             }
             TransformerFactory tFactory = TransformerFactory.newInstance();
             Transformer transformer = tFactory.newTransformer();
@@ -118,7 +119,6 @@ public class Library extends HashSet<Video> {
                 for(int j=2; j<XMLTags.getLength(); j++)
                 {
                     tags.add(new Tag(XMLTags.item(j).getNodeName(),XMLTags.item(j).getTextContent()));
-                    System.out.println(XMLTags.item(j).getNodeName()+": "+XMLTags.item(j).getTextContent());
                 }
                 this.add(new Video(location,title,tags));
             }
