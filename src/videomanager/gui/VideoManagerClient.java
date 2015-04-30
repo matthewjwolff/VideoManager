@@ -374,7 +374,7 @@ public class VideoManagerClient extends javax.swing.JFrame {
     }//GEN-LAST:event_SearchButtonActionPerformed
 
     private void searchResultsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_searchResultsMouseClicked
-        resultVideos.get(searchResults.locationToIndex(evt.getLocationOnScreen())).watch();
+        resultVideos.get(searchResults.getSelectedIndex()).watch();
     }//GEN-LAST:event_searchResultsMouseClicked
 
     private void saveMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveMenuItemActionPerformed

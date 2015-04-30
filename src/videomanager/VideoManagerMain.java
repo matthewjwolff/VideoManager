@@ -39,58 +39,56 @@ public class VideoManagerMain {
         //For Quin: to launch gui, uncomment following line.
         videomanager.gui.VideoManagerClient.main(args);
         
-        final File libraryFile = new File("library.xml");
-        
-        Library videoLib = new Library(libraryFile);
-        
-        HashSet<Tag> testTags = new HashSet<>();
-        Random r = new Random();
-        //r.setSeed(12);
-        
-        //Get random character:
-        int charIdx = r.nextInt(charArray.length);
-        String testChar = charArray[charIdx];
-        testTags.add(new Tag("character",testChar));
-        
-        //Get random stage:
-        int stageIdx = r.nextInt(stageArray.length);
-        String testStage = stageArray[stageIdx];
-        testTags.add(new Tag("stage",testStage));
-        
-        //Get random URL and its corresponding title:
-        int urlIdx = r.nextInt(urlArray.length);
-        String testURL = urlArray[urlIdx];
-        String testTitle = titleArray[urlIdx];
-        
-        System.out.println("Random test video to add:");
-        System.out.println("Title: " + testTitle);
-        System.out.println("URL: " + testURL);
-        System.out.println("Tags: " + testTags.toString());
-        System.out.println("");
-        
-        System.out.println("Adding video...");
-        Video test = new Video(testURL,testTitle,testTags);
-        System.out.println("Video added = "+videoLib.add(test));
-        
-        System.out.println("The library now includes the following videos:");
-        System.out.println("");
-        for(Video j : videoLib)
-        {
-            System.out.println("Title: " + j.toString());
-            System.out.println("URL: " + j.location);
-            System.out.println("Tags: " + j.tags);
-            System.out.println("");
-        }
-        //System.out.println("A video has successfully been saved with the following tags: ");
-        //System.out.println(((Video)videoLib.toArray()[0]).tags);
-        
-        DefaultListModel<Video> resultVideos = new QueryResult(videoLib, testTags).getResult();
-        //Video identical = videoLib.getIdentical(test);
-        videoLib.saveTo(libraryFile);
-        
-        System.out.println(resultVideos);
-        
-        //identical.watch();
+//        final File libraryFile = new File("library.xml");
+//        
+//        Library videoLib = new Library(libraryFile);
+//        
+//        HashSet<Tag> testTags = new HashSet<>();
+//        Random r = new Random();
+//        //r.setSeed(12);
+//        
+//        //Get random character:
+//        int charIdx = r.nextInt(charArray.length);
+//        String testChar = charArray[charIdx];
+//        testTags.add(new Tag("character",testChar));
+//        
+//        //Get random stage:
+//        int stageIdx = r.nextInt(stageArray.length);
+//        String testStage = stageArray[stageIdx];
+//        testTags.add(new Tag("stage",testStage));
+//        
+//        //Get random URL and its corresponding title:
+//        int urlIdx = r.nextInt(urlArray.length);
+//        String testURL = urlArray[urlIdx];
+//        String testTitle = titleArray[urlIdx];
+//        
+//        System.out.println("Random test video to add:");
+//        System.out.println("Title: " + testTitle);
+//        System.out.println("URL: " + testURL);
+//        System.out.println("Tags: " + testTags.toString());
+//        System.out.println("");
+//        
+//        System.out.println("Adding video...");
+//        Video test = new Video(testURL,testTitle,testTags);
+//        System.out.println("Video added = "+videoLib.add(test));
+//        
+//        System.out.println("The library now includes the following videos:");
+//        System.out.println("");
+//        for(Video j : videoLib)
+//        {
+//            System.out.println("Title: " + j.toString());
+//            System.out.println("URL: " + j.location);
+//            System.out.println("Tags: " + j.tags);
+//            System.out.println("");
+//        }
+//
+//        
+//        DefaultListModel<Video> resultVideos = new QueryResult(videoLib, testTags).getResult();
+//
+//        videoLib.saveTo(libraryFile);
+//        
+//        System.out.println(resultVideos);
+
         
     }
     
