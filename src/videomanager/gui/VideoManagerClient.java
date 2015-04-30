@@ -44,7 +44,7 @@ public class VideoManagerClient extends javax.swing.JFrame {
         helpers = temp;
     }
     
-    final File libraryFile = new File("nonexistant.xml");
+    final File libraryFile = new File("library.xml");
     Library videoLib = new Library(libraryFile);
     HashSet<Tag> Tags = new HashSet<>();
     DefaultListModel<Video> resultVideos = new DefaultListModel<> ();
@@ -200,6 +200,11 @@ public class VideoManagerClient extends javax.swing.JFrame {
         fileMenu.setText("File");
 
         saveMenuItem.setText("Save...");
+        saveMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                saveMenuItemActionPerformed(evt);
+            }
+        });
         fileMenu.add(saveMenuItem);
 
         jMenuBar1.add(fileMenu);
@@ -371,6 +376,10 @@ public class VideoManagerClient extends javax.swing.JFrame {
     private void searchResultsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_searchResultsMouseClicked
         resultVideos.get(searchResults.locationToIndex(evt.getLocationOnScreen())).watch();
     }//GEN-LAST:event_searchResultsMouseClicked
+
+    private void saveMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveMenuItemActionPerformed
+        videoLib.saveTo(libraryFile);
+    }//GEN-LAST:event_saveMenuItemActionPerformed
    
     public void clearAll()
     {
