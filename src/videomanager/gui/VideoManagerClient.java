@@ -5,8 +5,14 @@
  */
 package videomanager.gui;
 
+import java.io.File;
+import java.util.ArrayList;
 import javax.swing.JComponent;
 import java.util.HashSet;
+import javax.swing.DefaultListModel;
+import javax.swing.JList;
+import javax.swing.ListModel;
+import javax.swing.event.ListDataListener;
 import videomanager.*;
 
 /**
@@ -21,6 +27,10 @@ public class VideoManagerClient extends javax.swing.JFrame {
      */
     public VideoManagerClient() {
         initComponents();
+        
+        searchResults.setModel(resultVideos);
+        
+        
         //The following code is needed for proper instantiation of Helper class. Do not modify.
         JComponent[] temp = {
             VideoUrl,
@@ -30,12 +40,15 @@ public class VideoManagerClient extends javax.swing.JFrame {
             StageAddButton,
             PlayerTag,
             PlayerAddButton,
-            AcceptButton,
+            AddButton,
         };
         helpers = temp;
     }
     
+    final File libraryFile = new File("library.xml");
+    Library videoLib = new Library(libraryFile);
     HashSet<Tag> Tags = new HashSet<>();
+    DefaultListModel<Video> resultVideos = new DefaultListModel<> ();
     
     JComponent[] helpers;
     /**
@@ -63,7 +76,7 @@ public class VideoManagerClient extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         jButton4 = new javax.swing.JButton();
-        AcceptButton = new javax.swing.JButton();
+        AddButton = new javax.swing.JButton();
         VideoUrlLabel = new javax.swing.JLabel();
         VideoUrl = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
@@ -72,6 +85,9 @@ public class VideoManagerClient extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         videoTitleLabel = new javax.swing.JLabel();
         videoTitle = new javax.swing.JTextField();
+        SearchButton = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        searchResults = new javax.swing.JList();
         jMenuBar1 = new javax.swing.JMenuBar();
         fileMenu = new javax.swing.JMenu();
         saveMenuItem = new javax.swing.JMenuItem();
@@ -168,10 +184,10 @@ public class VideoManagerClient extends javax.swing.JFrame {
             }
         });
 
-        AcceptButton.setText("Accept");
-        AcceptButton.addActionListener(new java.awt.event.ActionListener() {
+        AddButton.setText("Add");
+        AddButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                AcceptButtonActionPerformed(evt);
+                AddButtonActionPerformed(evt);
             }
         });
 
@@ -190,6 +206,20 @@ public class VideoManagerClient extends javax.swing.JFrame {
                 videoTitleActionPerformed(evt);
             }
         });
+
+        SearchButton.setText("Search");
+        SearchButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                SearchButtonActionPerformed(evt);
+            }
+        });
+
+        searchResults.setModel(new javax.swing.AbstractListModel() {
+            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
+            public int getSize() { return strings.length; }
+            public Object getElementAt(int i) { return strings[i]; }
+        });
+        jScrollPane1.setViewportView(searchResults);
 
         fileMenu.setText("File");
 
@@ -220,15 +250,14 @@ public class VideoManagerClient extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(CharacterLabel)
-                    .addComponent(PlayerLabel)
                     .addComponent(VideoUrlLabel)
                     .addComponent(VideoUrl, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(videoTitleLabel)
+                    .addComponent(videoTitle, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(CharacterAdd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(CharacterAddButton))
+                            .addComponent(PlayerLabel)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(StageAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
@@ -239,26 +268,30 @@ public class VideoManagerClient extends javax.swing.JFrame {
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jButton4)
                                     .addComponent(PlayerAddButton)))
-                            .addComponent(StageLabel))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(CharacterAdd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(CharacterAddButton))
+                            .addComponent(StageLabel)
+                            .addComponent(CharacterTagLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(34, 34, 34)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(51, 51, 51)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel6)
                                     .addComponent(jLabel5)
                                     .addGroup(layout.createSequentialGroup()
                                         .addComponent(jLabel4)
                                         .addGap(68, 68, 68)
-                                        .addComponent(jLabel1))
-                                    .addComponent(AcceptButton)))
-                            .addComponent(CharacterTagLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addComponent(videoTitleLabel)
-                    .addComponent(videoTitle, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                        .addComponent(jLabel1))))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(AddButton)
+                                .addGap(26, 26, 26)
+                                .addComponent(SearchButton)))))
+                .addContainerGap(15, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -274,36 +307,42 @@ public class VideoManagerClient extends javax.swing.JFrame {
                 .addGap(32, 32, 32)
                 .addComponent(CharacterLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel4)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel1)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(CharacterAdd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(CharacterAddButton))
+                        .addGap(35, 35, 35)
+                        .addComponent(StageLabel)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(CharacterTagLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(CharacterAdd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(CharacterAddButton)
-                        .addComponent(jLabel4)))
-                .addGap(6, 6, 6)
-                .addComponent(StageLabel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(StageAddButton)
-                        .addComponent(jLabel5)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(StageAddButton)
+                                .addComponent(jLabel5))
+                            .addComponent(StageAdd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(PlayerLabel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(PlayerTag, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(PlayerAddButton)
+                            .addComponent(jLabel6))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(CharacterTagLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(StageAdd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(PlayerLabel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(PlayerTag, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(PlayerAddButton)
-                    .addComponent(jLabel6)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 20, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 10, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton4)
-                    .addComponent(AcceptButton))
+                    .addComponent(AddButton)
+                    .addComponent(SearchButton))
                 .addGap(28, 28, 28))
         );
 
@@ -352,10 +391,10 @@ public class VideoManagerClient extends javax.swing.JFrame {
         new VMHelper(helpers).setVisible(true);
     }//GEN-LAST:event_helpMenuItemActionPerformed
 
-    private void AcceptButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AcceptButtonActionPerformed
-        new Video(VideoUrl.getText(),videoTitle.getText(),Tags);
+    private void AddButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AddButtonActionPerformed
+        videoLib.add(new Video(VideoUrl.getText(),videoTitle.getText(),Tags));
         clearAll();
-    }//GEN-LAST:event_AcceptButtonActionPerformed
+    }//GEN-LAST:event_AddButtonActionPerformed
 
     private void VideoUrlActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_VideoUrlActionPerformed
         // TODO add your handling code here:
@@ -364,6 +403,14 @@ public class VideoManagerClient extends javax.swing.JFrame {
     private void videoTitleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_videoTitleActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_videoTitleActionPerformed
+
+    private void SearchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SearchButtonActionPerformed
+        resultVideos = new QueryResult(videoLib, Tags).getResult();
+        System.out.println("=======");
+        System.out.println(resultVideos);
+       searchResults.setModel(resultVideos);
+        
+    }//GEN-LAST:event_SearchButtonActionPerformed
    
     public void clearAll()
     {
@@ -407,12 +454,13 @@ public class VideoManagerClient extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new VideoManagerClient().setVisible(true);
+                //new VideoManagerClient().setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton AcceptButton;
+    private javax.swing.JButton AddButton;
     private javax.swing.JComboBox CharacterAdd;
     private javax.swing.JButton CharacterAddButton;
     private javax.swing.JLabel CharacterLabel;
@@ -420,6 +468,7 @@ public class VideoManagerClient extends javax.swing.JFrame {
     private javax.swing.JButton PlayerAddButton;
     private javax.swing.JLabel PlayerLabel;
     private javax.swing.JTextField PlayerTag;
+    private javax.swing.JButton SearchButton;
     private javax.swing.JComboBox StageAdd;
     private javax.swing.JButton StageAddButton;
     private javax.swing.JLabel StageLabel;
@@ -438,8 +487,10 @@ public class VideoManagerClient extends javax.swing.JFrame {
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JScrollPane jScrollPane1;
     private java.awt.Panel panel1;
     private javax.swing.JMenuItem saveMenuItem;
+    private javax.swing.JList searchResults;
     private javax.swing.JTextField videoTitle;
     private javax.swing.JLabel videoTitleLabel;
     // End of variables declaration//GEN-END:variables
