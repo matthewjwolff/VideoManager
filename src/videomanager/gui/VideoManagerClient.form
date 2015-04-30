@@ -260,9 +260,6 @@
           </StringArray>
         </Property>
       </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="CharacterAddActionPerformed"/>
-      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="CharacterAddButton">
       <Properties>
@@ -293,14 +290,8 @@
           </StringArray>
         </Property>
       </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="StageAddActionPerformed"/>
-      </Events>
     </Component>
     <Component class="javax.swing.JTextField" name="PlayerTag">
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="PlayerTagActionPerformed"/>
-      </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="CharacterLabel">
       <Properties>
@@ -353,9 +344,6 @@
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="VideoUrl">
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="VideoUrlActionPerformed"/>
-      </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel1">
     </Component>
@@ -371,9 +359,6 @@
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="videoTitle">
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="videoTitleActionPerformed"/>
-      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="SearchButton">
       <Properties>
