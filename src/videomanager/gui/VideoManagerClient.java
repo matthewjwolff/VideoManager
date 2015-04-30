@@ -6,13 +6,9 @@
 package videomanager.gui;
 
 import java.io.File;
-import java.util.ArrayList;
 import javax.swing.JComponent;
 import java.util.HashSet;
 import javax.swing.DefaultListModel;
-import javax.swing.JList;
-import javax.swing.ListModel;
-import javax.swing.event.ListDataListener;
 import videomanager.*;
 
 /**
@@ -33,6 +29,7 @@ public class VideoManagerClient extends javax.swing.JFrame {
         
         //The following code is needed for proper instantiation of Helper class. Do not modify.
         JComponent[] temp = {
+            videoTitle,
             VideoUrl,
             CharacterAdd,
             CharacterAddButton,
@@ -41,6 +38,8 @@ public class VideoManagerClient extends javax.swing.JFrame {
             PlayerTag,
             PlayerAddButton,
             AddButton,
+            SearchButton,
+            searchResults,
         };
         helpers = temp;
     }
@@ -467,6 +466,7 @@ public class VideoManagerClient extends javax.swing.JFrame {
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 new VideoManagerClient().setVisible(true);
                 //new VideoManagerClient().setVisible(true);

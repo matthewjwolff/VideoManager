@@ -3,6 +3,8 @@ package videomanager.gui;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.WindowEvent;
@@ -36,35 +38,11 @@ public class VMHelper extends javax.swing.JFrame {
      */
     public VMHelper(final JComponent[] helpers) {
         initComponents();
-        timer = new Timer(500, animator);
+        timer = new Timer(250, animator);
         this.helpComponents = helpers;
         restore = helpComponents[0].getBackground();
         timer.start();
         progressBar.setMaximum(helpComponents.length-1);
-        for(JComponent component : this.helpComponents)
-        {
-            component.addMouseListener(new MouseListener() {
-
-                @Override
-                public void mouseClicked(MouseEvent e) {
-                    if(e.getComponent().equals(helpComponents[index]))
-                        nextTask();
-                }
-
-                @Override
-                public void mousePressed(MouseEvent e) {}
-
-                @Override
-                public void mouseReleased(MouseEvent e) {}
-
-                @Override
-                public void mouseEntered(MouseEvent e) {}
-
-                @Override
-                public void mouseExited(MouseEvent e) {}
-                
-            });
-        }
         this.addWindowListener(new WindowListener() {
 
             @Override
@@ -94,6 +72,48 @@ public class VMHelper extends javax.swing.JFrame {
             public void windowDeactivated(WindowEvent e) {}
             
         });
+        
+        for(int i=0; i<helpComponents.length; i++)
+        {
+            if(i==0)
+            {
+                helpComponents[i].addMouseListener(new MouseListener() {
+
+                    @Override
+                    public void mouseClicked(MouseEvent e) {
+                        if(e.getComponent().equals(helpComponents[index]))
+                        nextTask();
+                    }
+
+                    @Override
+                    public void mousePressed(MouseEvent e) {}
+
+                    @Override
+                    public void mouseReleased(MouseEvent e) {}
+
+                    @Override
+                    public void mouseEntered(MouseEvent e) {}
+
+                    @Override
+                    public void mouseExited(MouseEvent e) {}
+                    
+                });
+            }
+            else helpComponents[i].addFocusListener(new FocusListener() {
+
+                @Override
+                public void focusGained(FocusEvent e) {
+                    if(e.getComponent().equals(helpComponents[index]))
+                        nextTask();
+                }
+
+                @Override
+                public void focusLost(FocusEvent e) {
+                    //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                }
+                
+            });
+        }
     }
     
     private Color restore;
@@ -103,27 +123,33 @@ public class VMHelper extends javax.swing.JFrame {
     private final Timer timer;
     
     private final String[] messages = {
-        "To get started, type the link of your video in the animated field...",
+        "To get started, type the name of your video in the animated field...",
+        "Next, add the URL to the video.",
         "Next, select the characters that appear in the video",
         "When you have selected the characters, be sure to submit them",
         "Next, select your stages",
         "You can have more than one, but be sure to click add",
         "Type the names of the players here, type one name at at time",
         "Submit them to the system. Again, you can have more than two",
-        "When you're all done, enter the video into the system"
+        "When you're all done, enter the video into the system",
+        "To search for a video, define your tags as before and press search",
+        "Search results appear in this field. Click on a video to watch it",
     };
     
     private int index = 0;
     
     private final String[] tasks = {
-        "Enter video URL...",
+        "Enter video name",
+        "Enter video URL",
         "Select Characters",
         "Click add",
         "Select Stage",
         "Click add",
         "Enter player name",
         "Click add",
-        "Finish"
+        "Click add video",
+        "Press search",
+        "Click a video",
     };
     
     private final String message = "Welcome to the interactive help menu. \nHere, prompts will be given that will guide you through proper usage of the system. \nThe appropriate places to click will be animated on the main program interface";
@@ -133,7 +159,7 @@ public class VMHelper extends javax.swing.JFrame {
      */
     public void nextTask()
     {
-        if(index==7) 
+        if(index==helpComponents.length-1) 
         {
             this.dispatchEvent(new WindowEvent(this,WindowEvent.WINDOW_CLOSING));
             timer.stop();
@@ -164,7 +190,7 @@ public class VMHelper extends javax.swing.JFrame {
     private boolean up = false;
     
     private final ActionListener animator = new ActionListener() {
-            final int STEPS = 4;
+            final int STEPS = 2;
             @Override
             public void actionPerformed(ActionEvent e) {
                 JComponent flasher = helpComponents[index];
