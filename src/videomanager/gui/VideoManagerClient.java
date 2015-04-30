@@ -372,12 +372,13 @@ public class VideoManagerClient extends javax.swing.JFrame {
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         clearAll();
+        resultVideos.clear();
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void CharacterAddButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CharacterAddButtonActionPerformed
         String tag = CharacterAdd.getSelectedItem().toString();
         Tags.add(new Tag("character",tag));
-        String CharacterTagsText = CharacterTagLabel.getText() + ", " + tag;
+        String CharacterTagsText = CharacterTagLabel.getText() + " " + tag;
         CharacterTagLabel.setText(CharacterTagsText);
         
     }//GEN-LAST:event_CharacterAddButtonActionPerformed
@@ -398,7 +399,6 @@ public class VideoManagerClient extends javax.swing.JFrame {
 
     private void AddButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AddButtonActionPerformed
         videoLib.add(new Video(VideoUrl.getText(),videoTitle.getText(),Tags));
-        System.out.println("lib"+((Video)videoLib.toArray()[0]).tags);
         clearAll();
     }//GEN-LAST:event_AddButtonActionPerformed
 
@@ -411,15 +411,10 @@ public class VideoManagerClient extends javax.swing.JFrame {
     }//GEN-LAST:event_videoTitleActionPerformed
 
     private void SearchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SearchButtonActionPerformed
-        System.out.println("searching "+Tags);
         resultVideos.clear();
         resultVideos = new QueryResult(videoLib, Tags).getResult();
-        System.out.println("=======");
-        System.out.println(resultVideos);
-        //System.out.println(resultVideos.get(0).tags);
-        //System.out.println(resultVideos.get(1).tags);
-       searchResults.setModel(resultVideos);
-        
+        searchResults.setModel(resultVideos);
+        clearAll();
     }//GEN-LAST:event_SearchButtonActionPerformed
 
     private void searchResultsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_searchResultsMouseClicked
