@@ -68,6 +68,15 @@ public class Video {
         }
     }
     
+    /*
+     * Formats the Video to display its Title
+     */
+    @Override
+    public String toString()
+    {
+        return title;
+    }
+    
     /**
      * Returns true if this video points to the same location as another.
      * @param o the object to compare

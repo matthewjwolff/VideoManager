@@ -2,6 +2,7 @@ package videomanager;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import javax.swing.DefaultListModel;
 
 /**
  * Stores the results of a query to the Video Library
@@ -9,7 +10,7 @@ import java.util.HashSet;
  */
 public class QueryResult 
 {
-    private final ArrayList<Video> result;
+    private final DefaultListModel<Video> result;
     
     /**
      * Execute the Search on the given set of videos
@@ -18,18 +19,19 @@ public class QueryResult
      */
     public QueryResult(Library videos, HashSet<Tag> tags)
     {
-        result = new ArrayList<>();
+        result = new DefaultListModel<>();
+        int index = 0;
         for(Video i : videos)
         {
             if(i.tags.containsAll(tags))
-                result.add(i);
+                result.add(index++,i);
         }
     }
     /**
      * Returns the result of the query as an ArrayList of Videos
      * @return the result of the query
      */
-    public ArrayList<Video> getResult()
+    public DefaultListModel<Video> getResult()
     {
         return result;
     }
