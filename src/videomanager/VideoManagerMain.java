@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Random;
+import javax.swing.DefaultListModel;
 
 /**
  * This application allows the user to efficiently navigate through videos based on content-specific tags.
@@ -23,6 +24,13 @@ public class VideoManagerMain {
     public static String[] stageArray = {"Final Destination", "Battlefield",
         "Dreamland", "Yoshi's Story", "Fountain of Dreams", "Pokemon Stadium",
         "Kongo Jungle"};
+    public static String[] urlArray = {"https://youtu.be/7hbpsmTd4PY?t=7m48s",
+        "https://www.youtube.com/watch?v=Gv74JXJBFwk",
+        "https://youtu.be/A60AjGrwEyo?t=3m10s"};
+    public static String[] titleArray = {"Grudge of Louisiana Melee - Noge "
+            + "(Fox) vs MH | Dom (Peach)","Apex 2015 - Leffen (Fox) Vs. "
+            + "EG | PPMD (Marth) SSBM Winners Finals - Smash Melee",
+            "SS/Tang(Green) vs Zhu/Lucky(Blue)2"};
     
     /**
      * @param args the command line arguments
@@ -63,7 +71,7 @@ public class VideoManagerMain {
         System.out.println("A video has successfully been saved with the following tags: ");
         System.out.println(((Video)videoLib.toArray()[0]).tags);
         
-        ArrayList<Video> resultVideos = new QueryResult(videoLib, testTags).getResult();
+        DefaultListModel<Video> resultVideos = new QueryResult(videoLib, testTags).getResult();
         //Video identical = videoLib.getIdentical(test);
         videoLib.saveTo(libraryFile);
         
