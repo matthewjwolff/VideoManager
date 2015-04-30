@@ -219,6 +219,11 @@ public class VideoManagerClient extends javax.swing.JFrame {
             public int getSize() { return strings.length; }
             public Object getElementAt(int i) { return strings[i]; }
         });
+        searchResults.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                searchResultsMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(searchResults);
 
         fileMenu.setText("File");
@@ -411,11 +416,15 @@ public class VideoManagerClient extends javax.swing.JFrame {
         resultVideos = new QueryResult(videoLib, Tags).getResult();
         System.out.println("=======");
         System.out.println(resultVideos);
-        System.out.println(resultVideos.get(0).tags);
-        System.out.println(resultVideos.get(1).tags);
+        //System.out.println(resultVideos.get(0).tags);
+        //System.out.println(resultVideos.get(1).tags);
        searchResults.setModel(resultVideos);
         
     }//GEN-LAST:event_SearchButtonActionPerformed
+
+    private void searchResultsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_searchResultsMouseClicked
+        resultVideos.get(searchResults.locationToIndex(evt.getLocationOnScreen())).watch();
+    }//GEN-LAST:event_searchResultsMouseClicked
    
     public void clearAll()
     {
