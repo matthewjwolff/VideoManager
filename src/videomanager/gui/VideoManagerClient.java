@@ -130,11 +130,6 @@ public class VideoManagerClient extends javax.swing.JFrame {
         setTitle("Video Manager");
 
         CharacterAdd.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Bowser", "Captain Falcon", "Donkey Kong", "Dr. Mario", "Falco", "Fox", "Gannondorf", "Ice Climbers", "Jigglypuff", "Kirby", "Luigi", "Link", "Mario", "Marth", "Mewtwo", "Mr.Game&Watch", "Ness", "Peach", "Pichu", "Pikachu", "Roy", "Samus", "Sheik", "Yoshi", "Young Link", "Zelda" }));
-        CharacterAdd.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                CharacterAddActionPerformed(evt);
-            }
-        });
 
         CharacterAddButton.setText("Add");
         CharacterAddButton.addActionListener(new java.awt.event.ActionListener() {
@@ -151,17 +146,6 @@ public class VideoManagerClient extends javax.swing.JFrame {
         });
 
         StageAdd.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Battlefield", "Dreamland", "Final Destination", "Fountain of Dreams", "Pokemon Stadium", "Yoshi's Story" }));
-        StageAdd.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                StageAddActionPerformed(evt);
-            }
-        });
-
-        PlayerTag.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                PlayerTagActionPerformed(evt);
-            }
-        });
 
         CharacterLabel.setText("Characters");
 
@@ -192,19 +176,7 @@ public class VideoManagerClient extends javax.swing.JFrame {
 
         VideoUrlLabel.setText("Video URL");
 
-        VideoUrl.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                VideoUrlActionPerformed(evt);
-            }
-        });
-
         videoTitleLabel.setText("VideoTitle");
-
-        videoTitle.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                videoTitleActionPerformed(evt);
-            }
-        });
 
         SearchButton.setText("Search");
         SearchButton.addActionListener(new java.awt.event.ActionListener() {
@@ -353,14 +325,6 @@ public class VideoManagerClient extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void StageAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_StageAddActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_StageAddActionPerformed
-
-    private void PlayerTagActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PlayerTagActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_PlayerTagActionPerformed
-
     private void PlayerAddButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PlayerAddButtonActionPerformed
         String tag = PlayerTag.getText();
         Tags.add(new Tag("player",tag));
@@ -388,10 +352,6 @@ public class VideoManagerClient extends javax.swing.JFrame {
         jLabel2.setText(jLabel2.getText() + ' ' + tag);
     }//GEN-LAST:event_StageAddButtonActionPerformed
 
-    private void CharacterAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CharacterAddActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_CharacterAddActionPerformed
-
     private void helpMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_helpMenuItemActionPerformed
         new VMHelper(helpers).setVisible(true);
     }//GEN-LAST:event_helpMenuItemActionPerformed
@@ -400,14 +360,6 @@ public class VideoManagerClient extends javax.swing.JFrame {
         videoLib.add(new Video(VideoUrl.getText(),videoTitle.getText(),Tags));
         clearAll();
     }//GEN-LAST:event_AddButtonActionPerformed
-
-    private void VideoUrlActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_VideoUrlActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_VideoUrlActionPerformed
-
-    private void videoTitleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_videoTitleActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_videoTitleActionPerformed
 
     private void SearchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SearchButtonActionPerformed
         resultVideos.clear();
