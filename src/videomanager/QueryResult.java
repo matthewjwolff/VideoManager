@@ -4,7 +4,8 @@ import java.util.HashSet;
 import javax.swing.DefaultListModel;
 
 /**
- * Stores the results of a query to the Video Library
+ * Stores the results of a query to the Video Library.
+ * Utilizes the DefaultListModel for easy display in a JList.
  * @author Matthew Wolff
  */
 public class QueryResult 
@@ -27,7 +28,7 @@ public class QueryResult
         }
     }
     /**
-     * Returns the result of the query as an ArrayList of Videos
+     * Returns the result of the query as a DefaultListModel of Videos
      * @return the result of the query
      */
     public DefaultListModel<Video> getResult()

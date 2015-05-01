@@ -28,7 +28,8 @@ public class Video {
     public HashSet<Tag> tags;
     
     /**
-     * Creates a new Video object representing an entry in the Library
+     * Creates a new Video object representing an entry in the Library.
+     * The tags are cloned, so modifying an external reference will have no effect.
      * @param location the path, local or remote, to the file
      * @param title Name of video
      * @param tags the tags associated with this video
