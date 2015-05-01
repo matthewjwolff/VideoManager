@@ -1,10 +1,5 @@
 package videomanager;
 
-import java.io.File;
-import java.util.HashSet;
-import java.util.Random;
-import javax.swing.DefaultListModel;
-
 /**
  * This application allows the user to efficiently navigate through videos based on content-specific tags.
  * The application was developed with the intended use of storing Super Smash Bros. Melee videos, but it is not limited to just those videos.

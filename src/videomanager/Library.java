@@ -24,7 +24,6 @@ import org.xml.sax.SAXException;
 /**
  * Models a set of videos marked with content-specific tags.
  * Extends the Java HashSet definition, restricted to the Video class.
- * NOTE: always check if the video is contained in the HashSet before adding:
  * A video is considered equal to another only if they point to the same file.
  * Tags are not taken into account when considering equality; therefore, adding
  * an identical video will not add its tags to the video already in the set.
@@ -34,14 +33,15 @@ public class Library extends HashSet<Video> {
     
     /**
      * Saves the current Library as an XML File formatted thusly:
-     * xml
-     *      video
-     *          location ... /location
-     *          title ... /title
-     *          tag1 ... /tag1
-     *          ...
-     *      /video
-     * /xml
+     * <br>
+     * &lt;xml&gt; <br>
+     * &nbsp;     &lt;video&gt; <br>
+     * &nbsp;&nbsp;         &lt;location&gt; ... &lt;/location&gt; <br>
+     * &nbsp;&nbsp;         &lt;title&gt; ... &lt;/title&gt; <br>
+     * &nbsp;&nbsp;         &lt;tag1&gt; ... &lt;/tag1&gt; <br>
+     * &nbsp;&nbsp;         ...
+     * &nbsp;     &lt;/video&gt; <br>
+     * &lt;/xml&gt; <br>
      * @param file to save to
      */
     public void saveTo(File file)
